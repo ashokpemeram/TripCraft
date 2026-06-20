@@ -5,6 +5,7 @@ export const protect = async (req, res, next) => {
   let token = req.cookies.token;
 
   if (token) {
+    try {
       const secret = process.env.JWT_SECRET || 'tripcraft_fallback_secret_key_987654!';
       const decoded = jwt.verify(token, secret);
       req.user = await User.findById(decoded.userId).select('-password');
