@@ -43,10 +43,8 @@ export const AuthProvider = ({ children }) => {
     setLoading(true);
     try {
       const newUser = await authService.register(userData);
-      setUser(newUser);
       return newUser;
     } catch (error) {
-      setUser(null);
       throw error;
     } finally {
       setLoading(false);

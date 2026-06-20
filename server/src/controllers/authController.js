@@ -22,12 +22,11 @@ export const registerUser = async (req, res, next) => {
     });
 
     if (user) {
-      generateToken(res, user._id);
       res.status(201).json({
+        message: 'Registration successful! Proceed to authentication.',
         _id: user._id,
         username: user.username,
-        email: user.email,
-        profilePic: user.profilePic
+        email: user.email
       });
     } else {
       res.status(400);

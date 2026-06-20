@@ -23,6 +23,7 @@ const registerSchema = z.object({
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [serverError, setServerError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { login, register } = useAuth();
   const navigate = useNavigate();
@@ -65,9 +66,12 @@ const Auth = () => {
   const onSignupSubmit = async (data) => {
     setIsLoading(true);
     setServerError('');
+    setSuccessMessage('');
     try {
       await register(data);
-      navigate('/dashboard', { replace: true });
+      setSuccessMessage('Registration successful! Please sign in with your credentials.');
+      setIsLogin(true);
+      resetSignupForm();
     } catch (err) {
       setServerError(err.response?.data?.message || 'Failed to register account.');
     } finally {
@@ -78,6 +82,7 @@ const Auth = () => {
   const toggleTab = (mode) => {
     setIsLogin(mode);
     setServerError('');
+    setSuccessMessage('');
     resetLoginForm();
     resetSignupForm();
   };
@@ -163,6 +168,14 @@ const Auth = () => {
             <div className="mb-6 p-4 rounded-xl bg-error-container/20 border border-error/20 flex gap-3 text-error text-[13px] items-center">
               <span className="material-symbols-outlined text-[20px] shrink-0">error</span>
               <span>{serverError}</span>
+            </div>
+          )}
+
+          {/* Success Message Box */}
+          {successMessage && (
+            <div className="mb-6 p-4 rounded-xl bg-primary/15 border border-primary/20 flex gap-3 text-primary text-[13px] items-center">
+              <span className="material-symbols-outlined text-[20px] shrink-0">check_circle</span>
+              <span>{successMessage}</span>
             </div>
           )}
 

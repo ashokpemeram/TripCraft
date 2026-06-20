@@ -3,7 +3,6 @@ import api from '../lib/api';
 const authService = {
   register: async (userData) => {
     const response = await api.post('/api/auth/register', userData);
-    localStorage.setItem('tc_authenticated', 'true');
     return response.data;
   },
 
