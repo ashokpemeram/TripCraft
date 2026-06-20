@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 
 export const generateToken = (res, userId) => {
-  const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
+  const secret = process.env.JWT_SECRET || 'tripcraft_fallback_secret_key_987654!';
+  const token = jwt.sign({ userId }, secret, {
     expiresIn: '30d'
   });
 
