@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: '', // Using Vite proxy, so requests go to the same host
+  baseURL: import.meta.env.VITE_API_URL || (import.meta.env.PROD ? 'https://tripcraft-es0k.onrender.com' : ''), // Fail-safe fallback to deployed Render backend in production
   withCredentials: true, // Crucial for HTTP-only cookies
   headers: {
     'Content-Type': 'application/json'
