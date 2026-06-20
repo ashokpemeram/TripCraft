@@ -8,6 +8,20 @@ const api = axios.create({
   }
 });
 
+// Request interceptor to attach Bearer token to Authorization header if present
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('tc_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Response interceptor to handle unauthorized access globally
 api.interceptors.response.use(
   (response) => response,
@@ -15,6 +29,7 @@ api.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       // Clear local storage auth indicator if unauthorized response occurs
       localStorage.removeItem('tc_authenticated');
+      localStorage.removeItem('tc_token');
     }
     return Promise.reject(error);
   }

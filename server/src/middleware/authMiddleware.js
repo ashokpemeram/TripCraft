@@ -4,6 +4,11 @@ import User from '../models/User.js';
 export const protect = async (req, res, next) => {
   let token = req.cookies.token;
 
+  // Fallback: check Authorization Bearer header if cookie is missing (e.g. cross-domain restrictions)
+  if (!token && req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
+    token = req.headers.authorization.split(' ')[1];
+  }
+
   if (token) {
     try {
       const secret = process.env.JWT_SECRET || 'tripcraft_fallback_secret_key_987654!';
